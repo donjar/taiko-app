@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 require 'csv'
 
-s = ""
+s = ''
 
 songs = CSV.parse(s)
-songs.each do |s|
-  next if Song.exists?(donder_hiroba_id: s[1])
-  Song.create(name: s[0], donder_hiroba_id: s[1])
+songs.each do |song|
+  next if Song.exists?(donder_hiroba_id: song[1])
+
+  Song.create(name: song[0], donder_hiroba_id: song[1])
 end
