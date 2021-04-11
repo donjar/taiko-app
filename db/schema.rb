@@ -10,43 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_11_060307) do
+ActiveRecord::Schema.define(version: 2021_04_11_084320) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "categories", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
   create_table "charts", force: :cascade do |t|
     t.integer "song_id", null: false
-    t.string "level"
+    t.string "level", null: false
     t.integer "stars"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["song_id", "level"], name: "index_charts_on_song_id_and_level", unique: true
     t.index ["song_id"], name: "index_charts_on_song_id"
   end
 
   create_table "scores", force: :cascade do |t|
-    t.integer "score"
-    t.integer "ryo"
-    t.integer "ka"
-    t.integer "fuka"
-    t.integer "rolls"
+    t.integer "score", null: false
+    t.integer "ryo", null: false
+    t.integer "ka", null: false
+    t.integer "fuka", null: false
+    t.integer "rolls", null: false
     t.integer "chart_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["chart_id"], name: "index_scores_on_chart_id"
+    t.index ["chart_id"], name: "index_scores_on_chart_id", unique: true
   end
 
   create_table "songs", force: :cascade do |t|
-    t.string "name"
-    t.integer "donder_hiroba_id"
+    t.string "name", null: false
+    t.integer "donder_hiroba_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["donder_hiroba_id"], name: "index_songs_on_donder_hiroba_id", unique: true
   end
 
   add_foreign_key "charts", "songs"
