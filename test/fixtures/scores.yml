@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  score: 1
+  ryo: 1
+  ka: 1
+  fuka: 1
+  rolls: 1
+  chart: one
+
+two:
+  score: 1
+  ryo: 1
+  ka: 1
+  fuka: 1
+  rolls: 1
+  chart: two
