@@ -17,10 +17,10 @@ function getSongsFromCurrentPage() {
   }).join("\n");
 }
 
-function getSongs() {
-  return [...Array(8).keys()].map((idx) => {
-    window.location = `https://donderhiroba.jp/score_list.php?genre=${idx + 1}`;
-    while (document.readyState !== "interactive") {};
-    return getSongsFromCurrentPage();
-  });
+function getUraSongsFromCurrentPage() {
+  const contentBoxes = $(".contentBox");
+  return [...Array(contentBoxes.length).keys()].flatMap((idx) => {
+    const buttonChildren = contentBoxes[idx].children[1].children[0].children;
+    return (buttonChildren[0].children.length === 0) ? [new URL(buttonChildren[3].children[0].href).searchParams.get("song_no")] : [];
+  }).join(",");
 }

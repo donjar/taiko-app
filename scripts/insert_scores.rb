@@ -1,0 +1,19 @@
+require 'HTTParty'
+
+levels = { "Oni" => 4, "Ura Oni" => 5 }
+Chart.find_each do |chart|
+  resp = HTTParty.get(
+    "https://donderhiroba.jp/score_detail.php?song_no=#{chart.song.donder_hiroba_id}&level=#{levels[chart.level]}",
+    cookies: { "_token_v2" => "55uvjpnvmjug1208pfb7ttmhm4" },
+    headers: { "User-Agent" => "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:87.0) Gecko/20100101 Firefox/87.0" }
+  )
+  parsed = Nokogiri::HTML(resp.body)
+
+  score = parsed.css(".high_score > span")[0].text[0..-2]
+  ryo = parsed.css(".good_cnt > span")[0].text[0..-2]
+  ka = parsed.css(".ok_cnt > span")[0].text[0..-2]
+  fuka = parsed.css(".ng_cnt > span")[0].text[0..-2]
+  rolls = parsed.css(".pound_cnt > span")[0].text[0..-2]
+
+  Score.create(chart: chart, score: score, ryo: ryo, ka: ka, fuka: fuka, rolls: rolls)
+end
