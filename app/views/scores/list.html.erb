@@ -1,0 +1,26 @@
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Difficulty</th>
+    <th>Score</th>
+    <th>Crown</th>
+    <th>Best Score</th>
+  </tr>
+  <% @scores.each do |s| %>
+    <tr>
+      <td><%= s.chart.song.name %></td>
+      <td><%= s.chart.level %></td>
+      <td><%= s.score %></td>
+      <td>
+        <% unless s.crown.nil? %>
+          <%= image_tag s.crown, height: 40 %>
+        <% end %>
+      </td>
+      <td>
+        <% unless s.best_score.nil? %>
+          <%= image_tag s.best_score, height: 40 %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>
