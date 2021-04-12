@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'HTTParty'
-
 namespace :insert do
   desc 'Insert various things to the database'
 
   task :scores, [:donder_hiroba_token] => [:environment] do |_task, args|
+    require 'HTTParty'
+
     levels = { 'Oni' => 4, 'Ura Oni' => 5 }
     Chart.find_each do |chart|
       resp = HTTParty.get(
