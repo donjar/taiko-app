@@ -1,20 +1,16 @@
 <script>
   const columnDefs = [
-    { field: "name", sortable: true, filter: true },
-    { field: "difficulty", sortable: true, filter: true },
-    { field: "stars", sortable: true, filter: true },
-    { field: "score", sortable: true, filter: true },
+    { field: "name", maxWidth: undefined },
+    { field: "difficulty" },
+    { field: "stars", filter: "agNumberColumnFilter" },
+    { field: "score", filter: "agNumberColumnFilter" },
     {
       field: "crown",
-      sortable: true,
-      filter: true,
-      cellRenderer: params => params.value ? `<img height="100%" src=${params.value} />` : ""
+      cellRenderer: params => params.value ? `<img height="100%" src=${params.value} />` : "",
     },
     {
       field: "bestScore",
-      sortable: true,
-      filter: true,
-      cellRenderer: params => params.value ? `<img height="100%" src=${params.value} />` : ""
+      cellRenderer: params => params.value ? `<img height="100%" src=${params.value} />` : "",
     },
   ];
 
@@ -32,14 +28,17 @@
   ];
 
   const gridOptions = {
+    defaultColDef: { sortable: true, filter: true, floatingFilter: true, maxWidth: 100 },
     columnDefs: columnDefs,
-    rowData: rowData
+    rowData: rowData,
+    rowHeight: 30,
+    onFirstDataRendered: ({ api }) => api.sizeColumnsToFit(),
   };
 
   document.addEventListener('DOMContentLoaded', () => {
-    const gridDiv = document.querySelector('#myGrid');
+    const gridDiv = document.querySelector('#scoreGrid');
     new agGrid.Grid(gridDiv, gridOptions);
   });
 </script>
 
-<div id="myGrid" style="height: 1000px; width: 1200px;" class="ag-theme-alpine"></div>
+<div id="scoreGrid" class="ag-theme-alpine"></div>
