@@ -1,31 +1,45 @@
-<p>
-  Params available: stars, played
-</p>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Difficulty</th>
-    <th>Stars</th>
-    <th>Score</th>
-    <th>Crown</th>
-    <th>Best Score</th>
-  </tr>
-  <% @scores.each do |s| %>
-    <tr>
-      <td><%= s.chart.song.name %></td>
-      <td><%= s.chart.level %></td>
-      <td><%= s.chart.stars %></td>
-      <td><%= s.score %></td>
-      <td>
-        <% unless s.crown.nil? %>
-          <%= image_tag s.crown, height: 40 %>
-        <% end %>
-      </td>
-      <td>
-        <% unless s.best_score.nil? %>
-          <%= image_tag s.best_score, height: 40 %>
-        <% end %>
-      </td>
-    </tr>
-  <% end %>
-</table>
+<script>
+  const columnDefs = [
+    { field: "name", sortable: true, filter: true },
+    { field: "difficulty", sortable: true, filter: true },
+    { field: "stars", sortable: true, filter: true },
+    { field: "score", sortable: true, filter: true },
+    {
+      field: "crown",
+      sortable: true,
+      filter: true,
+      cellRenderer: params => params.value ? `<img height="100%" src=${params.value} />` : ""
+    },
+    {
+      field: "bestScore",
+      sortable: true,
+      filter: true,
+      cellRenderer: params => params.value ? `<img height="100%" src=${params.value} />` : ""
+    },
+  ];
+
+  const rowData = [
+    <% @scores.each do |s| %>
+      {
+        name: "<%= s.chart.song.name %>",
+        difficulty: "<%= s.chart.level %>",
+        stars: <%= s.chart.stars %>,
+        score: <%= s.score %>,
+        crown: "<%= s.crown %>",
+        bestScore: "<%= s.best_score %>",
+      },
+    <% end %>
+  ];
+
+  const gridOptions = {
+    columnDefs: columnDefs,
+    rowData: rowData
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const gridDiv = document.querySelector('#myGrid');
+    new agGrid.Grid(gridDiv, gridOptions);
+  });
+</script>
+
+<div id="myGrid" style="height: 1000px; width: 1200px;" class="ag-theme-alpine"></div>
