@@ -4,6 +4,7 @@
     { field: "difficulty" },
     { field: "stars", filter: "agNumberColumnFilter" },
     { field: "score", filter: "agNumberColumnFilter" },
+    { field: "points", filter: "agNumberColumnFilter" },
     {
       field: "crown",
       cellRenderer: params => params.value ? `<img height="100%" src=${params.value} />` : "",
@@ -21,24 +22,88 @@
         difficulty: "<%= s.chart.level %>",
         stars: <%= s.chart.stars %>,
         score: <%= s.score %>,
+        points: <%= s.score == 0 ? 'undefined' : s.ka + 2 * s.fuka %>,
         crown: "<%= s.crown %>",
         bestScore: "<%= s.best_score %>",
       },
     <% end %>
   ];
 
+  const fireUpdateSummaryData = ({ api }) => {
+    document.dispatchEvent(
+      new CustomEvent(
+        "updateFilteredData",
+        { detail: api.getModel().rowsToDisplay.map(r => r.data) }
+      )
+    );
+  }
+
   const gridOptions = {
     defaultColDef: { sortable: true, filter: true, floatingFilter: true, maxWidth: 100 },
     columnDefs: columnDefs,
     rowData: rowData,
     rowHeight: 30,
-    onFirstDataRendered: ({ api }) => api.sizeColumnsToFit(),
+    onFirstDataRendered: (e) => {
+      e.api.sizeColumnsToFit();
+      fireUpdateSummaryData(e);
+    },
+    onFilterChanged: fireUpdateSummaryData,
   };
 
   document.addEventListener('DOMContentLoaded', () => {
-    const gridDiv = document.querySelector('#scoreGrid');
+    const gridDiv = document.getElementById('scoreGrid');
     new agGrid.Grid(gridDiv, gridOptions);
+  });
+
+  document.addEventListener('updateFilteredData', (e) => {
+    document.getElementById('unplayedCount').innerText = e.detail.filter(r => r.crown === '').length;
+    document.getElementById('failedCount').innerText = e.detail.filter(r => r.crown === 'https://donderhiroba.jp/image/sp/640/crown_large_0_640.png').length;
+    document.getElementById('clearedCount').innerText = e.detail.filter(r => r.crown === 'https://donderhiroba.jp/image/sp/640/crown_large_1_640.png').length;
+    document.getElementById('fullComboCount').innerText = e.detail.filter(r => r.crown === 'https://donderhiroba.jp/image/sp/640/crown_large_2_640.png').length;
+    document.getElementById('donderFullComboCount').innerText = e.detail.filter(r => r.crown === 'https://donderhiroba.jp/image/sp/640/crown_large_3_640.png').length;
+
+    document.getElementById('noBadgeCount').innerText = e.detail.filter(r => r.bestScore === '').length;
+    document.getElementById('whiteBadgeCount').innerText = e.detail.filter(r => r.bestScore === 'https://donderhiroba.jp/image/sp/640/best_score_rank_2_640.png').length;
+    document.getElementById('bronzeBadgeCount').innerText = e.detail.filter(r => r.bestScore === 'https://donderhiroba.jp/image/sp/640/best_score_rank_3_640.png').length;
+    document.getElementById('silverBadgeCount').innerText = e.detail.filter(r => r.bestScore === 'https://donderhiroba.jp/image/sp/640/best_score_rank_4_640.png').length;
+    document.getElementById('goldBadgeCount').innerText = e.detail.filter(r => r.bestScore === 'https://donderhiroba.jp/image/sp/640/best_score_rank_5_640.png').length;
+    document.getElementById('pinkBadgeCount').innerText = e.detail.filter(r => r.bestScore === 'https://donderhiroba.jp/image/sp/640/best_score_rank_6_640.png').length;
+    document.getElementById('purpleBadgeCount').innerText = e.detail.filter(r => r.bestScore === 'https://donderhiroba.jp/image/sp/640/best_score_rank_7_640.png').length;
+    document.getElementById('rainbowBadgeCount').innerText = e.detail.filter(r => r.bestScore === 'https://donderhiroba.jp/image/sp/640/best_score_rank_8_640.png').length;
   });
 </script>
 
+<div id="summary">
+  <div>
+    <span>U</span>
+    <span id="unplayedCount"></span>
+    <img class="summaryLogo" src="https://donderhiroba.jp/image/sp/640/crown_large_0_640.png">
+    <span id="failedCount"></span>
+    <img class="summaryLogo" src="https://donderhiroba.jp/image/sp/640/crown_large_1_640.png">
+    <span id="clearedCount"></span>
+    <img class="summaryLogo" src="https://donderhiroba.jp/image/sp/640/crown_large_2_640.png">
+    <span id="fullComboCount"></span>
+    <img class="summaryLogo" src="https://donderhiroba.jp/image/sp/640/crown_large_3_640.png">
+    <span id="donderFullComboCount"></span>
+  </div>
+
+  <div>
+    <span>NB</span>
+    <span id="noBadgeCount"></span>
+    <img class="summaryLogo" src="https://donderhiroba.jp/image/sp/640/best_score_rank_2_640.png">
+    <span id="whiteBadgeCount"></span>
+    <img class="summaryLogo" src="https://donderhiroba.jp/image/sp/640/best_score_rank_3_640.png">
+    <span id="bronzeBadgeCount"></span>
+    <img class="summaryLogo" src="https://donderhiroba.jp/image/sp/640/best_score_rank_4_640.png">
+    <span id="silverBadgeCount"></span>
+    <img class="summaryLogo" src="https://donderhiroba.jp/image/sp/640/best_score_rank_5_640.png">
+    <span id="goldBadgeCount"></span>
+    <img class="summaryLogo" src="https://donderhiroba.jp/image/sp/640/best_score_rank_6_640.png">
+    <span id="pinkBadgeCount"></span>
+    <img class="summaryLogo" src="https://donderhiroba.jp/image/sp/640/best_score_rank_7_640.png">
+    <span id="purpleBadgeCount"></span>
+    <img class="summaryLogo" src="https://donderhiroba.jp/image/sp/640/best_score_rank_8_640.png">
+    <span id="rainbowBadgeCount"></span>
+  </div>
+</div>
 <div id="scoreGrid" class="ag-theme-alpine"></div>

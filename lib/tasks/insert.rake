@@ -6,7 +6,7 @@ namespace :insert do
   task :scores, [:donder_hiroba_token] => [:environment] do |_task, args|
     levels = { 'Oni' => 4, 'Ura Oni' => 5 }
     Chart.find_each do |chart|
-      p [chart.song.name, chart.level]
+      puts "Processing #{chart.song.name} (#{chart.level})"
       resp = HTTParty.get(
         "https://donderhiroba.jp/score_detail.php?song_no=#{chart.song.donder_hiroba_id}&level=#{levels[chart.level]}",
         cookies: { '_token_v2' => args.donder_hiroba_token },
@@ -27,11 +27,55 @@ namespace :insert do
                  crown: crown.nil? ? nil : "https://donderhiroba.jp/#{crown}",
                  best_score: best_score.nil? ? nil : "https://donderhiroba.jp/#{best_score}" }
 
-      score = Score.find_by(chart: chart)
-      if score.nil?
+      score_object = Score.find_by(chart: chart)
+      if score_object.nil?
+        puts "#{chart.song.name} (#{chart.level}) added (#{score})"
         Score.create(chart: chart, **params)
       else
-        score.update(params)
+        old_score = score_object.score
+        score_object.update(params)
+        puts "#{chart.song.name} (#{chart.level}) updated (#{old_score} -> #{score})" if old_score != score
+      end
+    end
+  end
+
+  task :charts, [:donder_hiroba_token] => [:environment] do |_task, args|
+    1.upto(8).each do |genre|
+      resp = HTTParty.get(
+        "https://donderhiroba.jp/score_list.php?genre=#{genre}",
+        cookies: { '_token_v2' => args.donder_hiroba_token },
+        headers: {
+          'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:87.0) Gecko/20100101 Firefox/87.0'
+        }
+      )
+      parsed = Nokogiri::HTML(resp.body)
+
+      parsed.css('.contentBox').each do |content_box|
+        song_name_area = content_box.children[1]
+        button_area = content_box.children[3]
+
+        title = song_name_area.text.strip
+        button = button_area.children[1].children[1]
+        ura = button.nil?
+        oni_button = button_area.children[1].children[7]
+
+        song_id = CGI.parse(URI(oni_button.css('a')[0].attribute('href').value).query)['song_no'][0]
+
+        puts "Processing #{title}"
+        unless Song.exists?(donder_hiroba_id: song_id)
+          puts "New song: #{title} (id: #{song_id})"
+          Song.create(name: title, donder_hiroba_id: song_id)
+        end
+
+        song = Song.find_by(donder_hiroba_id: song_id)
+        unless Chart.exists?(song: song, level: 'Oni')
+          puts "New Oni chart: #{title}"
+          Chart.create(song: song, level: 'Oni')
+        end
+        if ura && !Chart.exists?(song: song, level: 'Ura Oni')
+          puts "New Ura Oni chart: #{title}"
+          Chart.create(song: song, level: 'Ura Oni')
+        end
       end
     end
   end
