@@ -34,7 +34,7 @@ namespace :insert do
       else
         old_score = score_object.score
         score_object.update(params)
-        puts "#{chart.song.name} (#{chart.level}) updated (#{old_score} -> #{score})" if old_score != score
+        puts "#{chart.song.name} (#{chart.level}) updated (#{old_score} -> #{score})" if old_score.to_i != score
       end
     end
   end
