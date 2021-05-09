@@ -1,0 +1,209 @@
+<script>
+  const onFilterSortSubmit = () => {
+    const searchParams = new URLSearchParams();
+    for (const stars of ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]) {
+      if (document.getElementById(`starsCheckbox${stars}`).checked) {
+        searchParams.append("stars[]", stars);
+      }
+    }
+    for (const crown of ["Unplayed", "Failed", "Cleared", "FullCombo", "DonderFullCombo"]) {
+      if (document.getElementById(`crownCheckbox${crown}`).checked) {
+        searchParams.append("crown[]", crown);
+      }
+    }
+    for (const bestScore of ["NoBadge", "WhiteBadge", "BronzeBadge", "SilverBadge", "GoldBadge", "PinkBadge", "PurpleBadge", "RainbowBadge"]) {
+      if (document.getElementById(`bestScoreCheckbox${bestScore}`).checked) {
+        searchParams.append("bestScore[]", bestScore);
+      }
+    }
+    for (const sort of ["Score", "ScoreDesc", "Stars", "StarsDesc", "Ryo", "RyoDesc", "Ka", "KaDesc", "Fuka", "FukaDesc", "Penalty", "PenaltyDesc"]) {
+      if (document.getElementById(`sortRadio${sort}`).checked) {
+        searchParams.append("sort", sort);
+      }
+    }
+
+    window.location = `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`;
+  };
+</script>
+<div class="container">
+  <h1>Scores</h1>
+  <div>
+    Stars
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="starsCheckbox1" />
+      <label class="form-check-label" for="starsCheckbox1">1</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="starsCheckbox2" />
+      <label class="form-check-label" for="starsCheckbox2">2</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="starsCheckbox3" />
+      <label class="form-check-label" for="starsCheckbox3">3</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="starsCheckbox4" />
+      <label class="form-check-label" for="starsCheckbox4">4</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="starsCheckbox5" />
+      <label class="form-check-label" for="starsCheckbox5">5</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="starsCheckbox6" />
+      <label class="form-check-label" for="starsCheckbox6">6</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="starsCheckbox7" />
+      <label class="form-check-label" for="starsCheckbox7">7</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="starsCheckbox8" />
+      <label class="form-check-label" for="starsCheckbox8">8</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="starsCheckbox9" />
+      <label class="form-check-label" for="starsCheckbox9">9</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="starsCheckbox10" />
+      <label class="form-check-label" for="starsCheckbox10">10</label>
+    </div>
+  </div>
+
+  <div>
+    Crown
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="crownCheckboxUnplayed" />
+      <label class="form-check-label" for="crownCheckboxUnplayed">-</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="crownCheckboxFailed" />
+      <label class="form-check-label" for="crownCheckboxFailed"><img class="donder-hiroba-logo" src="https://donderhiroba.jp/image/sp/640/crown_large_0_640.png"></label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="crownCheckboxCleared" />
+      <label class="form-check-label" for="crownCheckboxCleared"><img class="donder-hiroba-logo" src="https://donderhiroba.jp/image/sp/640/crown_large_1_640.png"></label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="crownCheckboxFullCombo" />
+      <label class="form-check-label" for="crownCheckboxFullCombo"><img class="donder-hiroba-logo" src="https://donderhiroba.jp/image/sp/640/crown_large_2_640.png"></label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="crownCheckboxDonderFullCombo" />
+      <label class="form-check-label" for="crownCheckboxDonderFullCombo"><img class="donder-hiroba-logo" src="https://donderhiroba.jp/image/sp/640/crown_large_3_640.png"></label>
+    </div>
+  </div>
+
+  <div>
+    Best score
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="bestScoreCheckboxNoBadge" />
+      <label class="form-check-label" for="bestScoreCheckboxNoBadge">-</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="bestScoreCheckboxWhiteBadge" />
+      <label class="form-check-label" for="bestScoreCheckboxWhiteBadge"><img class="donder-hiroba-logo" src="https://donderhiroba.jp/image/sp/640/best_score_rank_2_640.png"></label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="bestScoreCheckboxBronzeBadge" />
+      <label class="form-check-label" for="bestScoreCheckboxBronzeBadge"><img class="donder-hiroba-logo" src="https://donderhiroba.jp/image/sp/640/best_score_rank_3_640.png"></label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="bestScoreCheckboxSilverBadge" />
+      <label class="form-check-label" for="bestScoreCheckboxSilverBadge"><img class="donder-hiroba-logo" src="https://donderhiroba.jp/image/sp/640/best_score_rank_4_640.png"></label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="bestScoreCheckboxGoldBadge" />
+      <label class="form-check-label" for="bestScoreCheckboxGoldBadge"><img class="donder-hiroba-logo" src="https://donderhiroba.jp/image/sp/640/best_score_rank_5_640.png"></label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="bestScoreCheckboxPinkBadge" />
+      <label class="form-check-label" for="bestScoreCheckboxPinkBadge"><img class="donder-hiroba-logo" src="https://donderhiroba.jp/image/sp/640/best_score_rank_6_640.png"></label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="bestScoreCheckboxPurpleBadge" />
+      <label class="form-check-label" for="bestScoreCheckboxPurpleBadge"><img class="donder-hiroba-logo" src="https://donderhiroba.jp/image/sp/640/best_score_rank_7_640.png"></label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input checked class="form-check-input" type="checkbox" id="bestScoreCheckboxRainbowBadge" />
+      <label class="form-check-label" for="bestScoreCheckboxRainbowBadge"><img class="donder-hiroba-logo" src="https://donderhiroba.jp/image/sp/640/best_score_rank_8_640.png"></label>
+    </div>
+  </div>
+
+  <div>
+    Sort
+    <div class="form-check form-check-inline">
+      <input name="inlineRadioOptions" checked class="form-check-input" type="radio" id="sortRadioScore" />
+      <label class="form-check-label" for="sortRadioScore">Score</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input name="inlineRadioOptions" class="form-check-input" type="radio" id="sortRadioScoreDesc" />
+      <label class="form-check-label" for="sortRadioScoreDesc">Score (desc)</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input name="inlineRadioOptions" class="form-check-input" type="radio" id="sortRadioStars" />
+      <label class="form-check-label" for="sortRadioStars">Stars</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input name="inlineRadioOptions" class="form-check-input" type="radio" id="sortRadioStarsDesc" />
+      <label class="form-check-label" for="sortRadioStarsDesc">Stars (desc)</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input name="inlineRadioOptions" class="form-check-input" type="radio" id="sortRadioRyo" />
+      <label class="form-check-label" for="sortRadioRyo">Ryo</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input name="inlineRadioOptions" class="form-check-input" type="radio" id="sortRadioRyoDesc" />
+      <label class="form-check-label" for="sortRadioRyoDesc">Ryo (desc)</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input name="inlineRadioOptions" class="form-check-input" type="radio" id="sortRadioKa" />
+      <label class="form-check-label" for="sortRadioKa">Ka</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input name="inlineRadioOptions" class="form-check-input" type="radio" id="sortRadioKaDesc" />
+      <label class="form-check-label" for="sortRadioKaDesc">Ka (desc)</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input name="inlineRadioOptions" class="form-check-input" type="radio" id="sortRadioFuka" />
+      <label class="form-check-label" for="sortRadioFuka">Fuka</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input name="inlineRadioOptions" class="form-check-input" type="radio" id="sortRadioFukaDesc" />
+      <label class="form-check-label" for="sortRadioFukaDesc">Fuka (desc)</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input name="inlineRadioOptions" class="form-check-input" type="radio" id="sortRadioPenalty" />
+      <label class="form-check-label" for="sortRadioPenalty">Penalty</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input name="inlineRadioOptions" class="form-check-input" type="radio" id="sortRadioPenaltyDesc" />
+      <label class="form-check-label" for="sortRadioPenaltyDesc">Penalty (desc)</label>
+    </div>
+  </div>
+
+  <button onClick="onFilterSortSubmit()" type="button" class="btn btn-primary">Update</button>
+
+  <div class="row row-cols-1 rows-cols-md-2 row-cols-lg-3 g-2">
+    <% @scores.each do |s| %>
+      <div class="col">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title"><%= s.chart.song.name %></h5>
+            <h6 class="card-subtitle text-muted"><%= s.chart.level %> level <%= s.chart.stars %></h6>
+            <% if s.score != 0 %>
+              <p class="mb-0"><%= s.score %> (-<%= s.ka + 2 * s.fuka %>) (<span class="text-danger"><%= s.ryo %></span> / <span class="text-secondary"><%= s.ka %></span> / <span class="text-primary"><%= s.fuka %></span> / <%= s.rolls %>)</p>
+            <% end %>
+            <% unless s.crown.nil? %>
+              <img class="donder-hiroba-logo" src="<%= s.crown %>" />
+            <% end %>
+            <% unless s.best_score.nil? %>
+              <img class="donder-hiroba-logo" src="<%= s.best_score %>" />
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
