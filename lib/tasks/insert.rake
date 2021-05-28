@@ -4,7 +4,7 @@ namespace :insert do
   desc 'Insert various things to the database'
 
   task :scores, [:donder_hiroba_token] => [:environment] do |_task, args|
-    puts "Have you refreshed your DH page?"
+    puts 'Have you refreshed your DH page?'
 
     levels = { 'Oni' => 4, 'Ura Oni' => 5 }
 
@@ -43,7 +43,14 @@ namespace :insert do
   end
 
   task :charts, [:donder_hiroba_token] => [:environment] do |_task, args|
+    genre_map = ['Pop', 'Anime', 'Kids', 'Vocaloid', 'Game Music', 'NAMCO Original', 'Variety', 'Classical']
+
+    SongCategory.destroy_all
+
     1.upto(8).each do |genre|
+      category = Category.find_or_create_by(name: genre_map[genre - 1])
+      puts "Processing category: #{category.name}"
+
       resp = HTTParty.get(
         "https://donderhiroba.jp/score_list.php?genre=#{genre}",
         cookies: { '_token_v2' => args.donder_hiroba_token },
@@ -53,7 +60,8 @@ namespace :insert do
       )
       parsed = Nokogiri::HTML(resp.body)
 
-      parsed.css('.contentBox').each do |content_box|
+      sequence_no = 0
+      parsed.css('.contentBox').each_with_index do |content_box|
         song_name_area = content_box.children[1]
         button_area = content_box.children[3]
 
@@ -64,13 +72,17 @@ namespace :insert do
 
         song_id = CGI.parse(URI(oni_button.css('a')[0].attribute('href').value).query)['song_no'][0]
 
-        puts "Processing #{title}"
         unless Song.exists?(donder_hiroba_id: song_id)
           puts "New song: #{title} (id: #{song_id})"
           Song.create(name: title, donder_hiroba_id: song_id)
         end
 
         song = Song.find_by(donder_hiroba_id: song_id)
+        if SongCategory.find_by(song: song, category: category).nil?
+          SongCategory.create(song: song, category: category, sequence_no: sequence_no)
+        end
+        sequence_no += 1 unless ura
+
         unless Chart.exists?(song: song, level: 'Oni')
           puts "New Oni chart: #{title}"
           Chart.create(song: song, level: 'Oni')

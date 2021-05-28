@@ -86,6 +86,11 @@
               <img class="donder-hiroba-logo" src="<%= s.best_score %>" />
             <% end %>
           </div>
+          <ul class="list-group list-group-flush">
+            <% s.chart.song.song_categories.each do |sc| %>
+              <li class="list-group-item"><%= sc.category.name %> #<%= sc.sequence_no %></li>
+            <% end %>
+          </ul>
         </div>
       </div>
     <% end %>

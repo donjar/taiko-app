@@ -45,6 +45,6 @@ class ScoresController < ApplicationController
         'PenaltyDesc' => Arel.sql('ka + 2 * fuka DESC')
       }[params[:sort]])
     end
-    @scores = @scores.includes(:chart, chart: [:song])
+    @scores = @scores.includes(chart: {song: {song_categories: :category}})
   end
 end
