@@ -36,13 +36,13 @@ class ScoresController < ApplicationController
         'Ryo' => 'ryo',
         'Ka' => 'ka',
         'Fuka' => 'fuka',
-        'Penalty' => 'ka + 2 * fuka',
+        'Penalty' => Arel.sql('ka + 2 * fuka'),
         'ScoreDesc' => 'score DESC',
         'StarsDesc' => 'charts.stars DESC',
         'RyoDesc' => 'ryo DESC',
         'KaDesc' => 'ka DESC',
         'FukaDesc' => 'fuka DESC',
-        'PenaltyDesc' => 'ka + 2 * fuka DESC'
+        'PenaltyDesc' => Arel.sql('ka + 2 * fuka DESC')
       }[params[:sort]])
     end
     @scores = @scores.includes(:chart, chart: [:song])

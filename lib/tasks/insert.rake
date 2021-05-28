@@ -4,7 +4,10 @@ namespace :insert do
   desc 'Insert various things to the database'
 
   task :scores, [:donder_hiroba_token] => [:environment] do |_task, args|
+    puts "Have you refreshed your DH page?"
+
     levels = { 'Oni' => 4, 'Ura Oni' => 5 }
+
     Chart.find_each do |chart|
       puts "Processing #{chart.song.name} (#{chart.level})"
       resp = HTTParty.get(
@@ -34,7 +37,7 @@ namespace :insert do
       else
         old_score = score_object.score
         score_object.update(params)
-        puts "#{chart.song.name} (#{chart.level}) updated (#{old_score} -> #{score})" if old_score.to_i != score
+        puts "#{chart.song.name} (#{chart.level}) updated (#{old_score} -> #{score})" if old_score != score.to_i
       end
     end
   end
