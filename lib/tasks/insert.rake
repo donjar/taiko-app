@@ -61,7 +61,7 @@ namespace :insert do
       parsed = Nokogiri::HTML(resp.body)
 
       sequence_no = 0
-      parsed.css('.contentBox').each_with_index do |content_box|
+      parsed.css('.contentBox').each do |content_box|
         song_name_area = content_box.children[1]
         button_area = content_box.children[3]
 

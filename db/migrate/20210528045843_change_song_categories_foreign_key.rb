@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeSongCategoriesForeignKey < ActiveRecord::Migration[6.1]
   def change
     remove_column :song_categories, :categories_id

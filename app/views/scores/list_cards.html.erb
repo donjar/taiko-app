@@ -31,8 +31,8 @@
     Stars
     <% ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"].each do |stars| %>
       <div class="form-check form-check-inline">
-        <input <%= params["stars"].include?(stars) ? "checked" : "" %> class="form-check-input" type="checkbox" id="starsCheckbox<%= stars %>" />
-        <label class="form-check-label" for="starsCheckbox<%= stars %>"><%= stars %></label>
+        <input <%= params["stars"]&.include?(stars) ? "checked" : "" %> class="form-check-input" type="checkbox" id="starsCheckbox<%= stars %>" />
+        <label class="form-check-label" for="starsCheckbox<%= stars %>"><%= stars %> (<%= @scores.where('charts.stars' => stars.to_i).count %>)</label>
       </div>
     <% end %>
   </div>
@@ -41,18 +41,18 @@
     Crown
     <% ["Unplayed", "Failed", "Cleared", "FullCombo", "DonderFullCombo"].each do |crown| %>
       <div class="form-check form-check-inline">
-        <input <%= params["crown"].include?(crown) ? "checked" : "" %> class="form-check-input" type="checkbox" id="crownCheckbox<%= crown %>" />
-        <label class="form-check-label" for="crownCheckbox<%= crown %>"><%= crown %></label>
+        <input <%= params["crown"]&.include?(crown) ? "checked" : "" %> class="form-check-input" type="checkbox" id="crownCheckbox<%= crown %>" />
+        <label class="form-check-label" for="crownCheckbox<%= crown %>"><%= crown %> (<%= @scores.where('crown' => Score::CROWN_MAPPING[crown]).count %>)</label>
       </div>
     <% end %>
   </div>
 
   <div>
     Best score
-    <% ["NoBadge", "WhiteBadge", "BronzeBadge", "SilverBadge", "GoldBadge", "PinkBadge", "PurpleBadge", "RainbowBadge"].each do |bestScore| %>
+    <% ["NoBadge", "WhiteBadge", "BronzeBadge", "SilverBadge", "GoldBadge", "PinkBadge", "PurpleBadge", "RainbowBadge"].each do |best_score| %>
       <div class="form-check form-check-inline">
-        <input <%= params["bestScore"].include?(bestScore) ? "checked" : "" %> class="form-check-input" type="checkbox" id="bestScoreCheckbox<%= bestScore %>" />
-        <label class="form-check-label" for="bestScoreCheckbox<%= bestScore %>"><%= bestScore %></label>
+        <input <%= params["best_score"]&.include?(best_score) ? "checked" : "" %> class="form-check-input" type="checkbox" id="bestScoreCheckbox<%= best_score %>" />
+        <label class="form-check-label" for="bestScoreCheckbox<%= best_score %>"><%= best_score %> (<%= @scores.where('best_score' => Score::BEST_SCORE_MAPPING[best_score]).count %>)</label>
       </div>
     <% end %>
   </div>
