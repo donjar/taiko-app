@@ -67,7 +67,7 @@ namespace :insert do
 
         title = song_name_area.text.strip
         button = button_area.children[1].children[1]
-        ura = button.nil?
+        ura = button.children.empty?
         oni_button = button_area.children[1].children[7]
 
         song_id = CGI.parse(URI(oni_button.css('a')[0].attribute('href').value).query)['song_no'][0]
