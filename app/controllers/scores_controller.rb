@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
 class ScoresController < ApplicationController
-  def list
-    @scores = Score.all.includes(:chart, chart: [:song])
-  end
-
   def list_cards
-    @scores = Score.all
+    @scores = Score.joins(chart: { song: :song_categories })
     @scores = @scores.where('charts.stars' => params[:stars].map(&:to_i)) unless params[:stars].nil?
     unless params[:crown].nil?
       @scores = @scores.where('crown' => params[:crown].map do |c|
@@ -26,6 +22,7 @@ class ScoresController < ApplicationController
         'Ka' => 'ka',
         'Fuka' => 'fuka',
         'Penalty' => Arel.sql('ka + 2 * fuka'),
+        'Song' => ['song_categories.category_id', 'song_categories.sequence_no'],
         'ScoreDesc' => 'score DESC',
         'StarsDesc' => 'charts.stars DESC',
         'RyoDesc' => 'ryo DESC',

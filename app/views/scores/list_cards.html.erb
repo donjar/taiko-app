@@ -16,7 +16,7 @@
         searchParams.append("bestScore[]", bestScore);
       }
     }
-    for (const sort of ["Score", "ScoreDesc", "Stars", "StarsDesc", "Ryo", "RyoDesc", "Ka", "KaDesc", "Fuka", "FukaDesc", "Penalty", "PenaltyDesc"]) {
+    for (const sort of ["Score", "ScoreDesc", "Stars", "StarsDesc", "Ryo", "RyoDesc", "Ka", "KaDesc", "Fuka", "FukaDesc", "Penalty", "PenaltyDesc", "Song"]) {
       if (document.getElementById(`sortRadio${sort}`).checked) {
         searchParams.append("sort", sort);
       }
@@ -59,10 +59,10 @@
 
   <div>
     Sort
-    <% ["Score", "ScoreDesc", "Stars", "StarsDesc", "Ryo", "RyoDesc", "Ka", "KaDesc", "Fuka", "FukaDesc", "Penalty", "PenaltyDesc"].each do |sort| %>
+    <% ["Score", "ScoreDesc", "Stars", "StarsDesc", "Ryo", "RyoDesc", "Ka", "KaDesc", "Fuka", "FukaDesc", "Penalty", "PenaltyDesc", "Song"].each do |sort| %>
       <div class="form-check form-check-inline">
         <input name="inlineRadioOptions" <%= params["sort"] == sort ? "checked" : "" %> class="form-check-input" type="radio" id="sortRadio<%= sort %>" />
-        <label class="form-check-label" for="sortRadio%= sort %>"><%= sort %></label>
+        <label class="form-check-label" for="sortRadio<%= sort %>"><%= sort %></label>
       </div>
     <% end %>
   </div>
