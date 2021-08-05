@@ -2,4 +2,5 @@
 
 class Chart < ApplicationRecord
   belongs_to :song
+  has_many :scores
 end
