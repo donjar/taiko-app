@@ -1,0 +1,55 @@
+<script>
+  const onSubmit = () => {
+    const searchParams = new URLSearchParams();
+    for (const star of ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]) {
+      if (document.getElementById(`star${star}`).checked) {
+        searchParams.append("star", star);
+      }
+    }
+    for (const score of ["0", "50", "80", "82", "84", "86", "88", "90", "92", "94", "96", "98"]) {
+      if (document.getElementById(`score${score}`).checked) {
+        searchParams.append("score", score);
+      }
+    }
+
+    window.location = `${window.location.origin}${window.location.pathname}?${searchParams.toString()}`;
+  };
+</script>
+<div class="container">
+  <h1>Scores</h1>
+  <div>
+    Stars
+    <% ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"].each do |star| %>
+      <div class="form-check form-check-inline">
+        <input name="starRadios" <%= params["star"]&.include?(star) ? "checked" : "" %> class="form-check-input" type="radio" id="star<%= star %>" />
+        <label class="form-check-label" for="star<%= star %>"><%= star %></label>
+      </div>
+    <% end %>
+  </div>
+
+  <div>
+    Scores
+    <% ["0", "50", "80", "82", "84", "86", "88", "90", "92", "94", "96", "98"].each do |score| %>
+      <div class="form-check form-check-inline">
+        <input name="scoreRadios" <%= params["score"]&.include?(score) ? "checked" : "" %> class="form-check-input" type="radio" id="score<%= score %>" />
+        <label class="form-check-label" for="score<%= score %>"><%= score %></label>
+      </div>
+    <% end %>
+  </div>
+
+  <button onClick="onSubmit()" type="button" class="btn btn-primary">GET</button>
+
+  <div>Count: <%= @count %></div>
+
+  <% if @score %>
+    <h2><%= @score.chart.song.name %></h2>
+    <h3 class="text-muted"><%= @score.chart.level %> level <%= @score.chart.stars %></h3>
+    <%= @score.score %> (-<%= @score.ka + 2 * @score.fuka %>) (<span class="text-danger"><%= @score.ryo %></span> / <span class="text-secondary"><%= @score.ka %></span> / <span class="text-primary"><%= @score.fuka %></span> / <%= @score.rolls %>)
+    <% unless @score.crown.nil? %>
+      <img class="donder-hiroba-logo" src="<%= @score.crown %>" />
+    <% end %>
+    <% unless @score.best_score.nil? %>
+      <img class="donder-hiroba-logo" src="<%= @score.best_score %>" />
+    <% end %>
+  <% end %>
+</div>
