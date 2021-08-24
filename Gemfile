@@ -63,3 +63,5 @@ group :development do
   gem 'rubocop'
   gem 'rubocop-rails'
 end
+
+gem 'colorize'

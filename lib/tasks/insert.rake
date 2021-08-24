@@ -19,7 +19,16 @@ namespace :insert do
       )
       parsed = Nokogiri::HTML(resp.body)
 
-      score = parsed.css('.high_score > span')[0].text[0..-2]
+      s = parsed.css('.high_score > span')[0]
+      if s.nil?
+        puts "#{chart.song.name} (#{chart.level}) not found. Deleting.".red
+        chart.song.charts.each { |c| c.scores.destroy_all }
+        chart.song.charts.destroy_all
+        chart.song.song_categories.destroy_all
+        chart.song.destroy
+        next
+      end
+      score = s.text[0..-2]
       ryo = parsed.css('.good_cnt > span')[0].text[0..-2]
       ka = parsed.css('.ok_cnt > span')[0].text[0..-2]
       fuka = parsed.css('.ng_cnt > span')[0].text[0..-2]
@@ -32,12 +41,12 @@ namespace :insert do
 
       score_object = Score.find_by(chart: chart)
       if score_object.nil?
-        puts "#{chart.song.name} (#{chart.level}) added (#{score})"
+        puts "#{chart.song.name} (#{chart.level}) added (#{score})".green
         Score.create(chart: chart, **params)
       else
         old_score = score_object.score
         score_object.update(params)
-        puts "#{chart.song.name} (#{chart.level}) updated (#{old_score} -> #{score})" if old_score != score.to_i
+        puts "#{chart.song.name} (#{chart.level}) updated (#{old_score} -> #{score})".green if old_score != score.to_i
       end
     end
   end
